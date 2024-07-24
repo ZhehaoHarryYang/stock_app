@@ -29,7 +29,7 @@ const HistoricalData = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ marginLeft: '64px', marginTop: '64px', padding: '20px', width: 'calc(100% - 240px)' }}>
       <Typography variant="h4" gutterBottom>
         Historical Data for {symbol}
       </Typography>

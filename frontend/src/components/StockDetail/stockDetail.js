@@ -1,11 +1,11 @@
 import React from 'react';
-import { Container, Typography, Grid, Card, CardContent, Divider } from '@mui/material';
+import { Typography, Grid, Card, CardContent, Divider } from '@mui/material';
 import Sidebar from './sideBar';
 
 const StockDetail = ({ stock }) => {
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar />
+      <Sidebar symbol={stock.symbol} />
       <div style={{ marginLeft: '240px', marginTop: '64px', padding: '20px', width: 'calc(100% - 240px)' }}>
         <Typography variant="h4" component="div" gutterBottom>
           {stock.name}

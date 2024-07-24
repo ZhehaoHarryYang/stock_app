@@ -35,7 +35,7 @@ const StockList = () => {
   };
 
   return (
-    <Container>
+    <Container style={{ marginLeft: '64px', marginTop: '64px', padding: '20px', width: 'calc(100% - 240px)' }}>
       <Typography variant="h3">Stock List</Typography>
       <Grid container spacing={3}>
         {stocks.map((stock) => (
