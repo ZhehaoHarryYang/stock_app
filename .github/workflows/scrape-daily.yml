@@ -21,7 +21,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run StockList scraper
-        run: python StockList.py
+        run: python Scraping/StockList.py
 
       - name: Run StockHistory scraper
-        run: python StockHistory.py
+        run: python Scraping/StockHistory.py
