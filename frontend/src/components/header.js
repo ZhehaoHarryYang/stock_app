@@ -10,7 +10,7 @@ const Header = () => {
           Stock App
         </Typography>
         <Button color="inherit" component={Link} to="/">Home</Button>
-        <Button color="inherit" component={Link} to="/stocklist">Stock List</Button>
+        <Button color="inherit" component={Link} to="/stocks">Stock List</Button>
       </Toolbar>
     </AppBar>
   );

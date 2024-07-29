@@ -1,12 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Typography, Grid, Card, CardContent, Divider } from '@mui/material';
-import Sidebar from './sideBar';
+import Sidebar from './sideBar'; // Updated import path to match convention
+import { filterDataByRange } from '../../utils/dataByRange'; // Updated import path
+import DateRangePicker from '../HistoricalData/dateRangePicker'; // Updated import path
+import { getHistoricalData } from '../../api/stocks';
+import HistoricalDataChart from '../HistoricalData/historicalDataChart'; // Updated import path
 
 const StockDetail = ({ stock }) => {
+  const { symbol } = useParams();
+  const [data, setData] = useState([]);
+  const [selectedRange, setSelectedRange] = useState('all'); // Default to 'all'
+
+  useEffect(() => {
+    const fetchHistoricalData = async () => {
+      try {
+        const result = await getHistoricalData(symbol);
+        const sortedData = result.hist_price.sort((a, b) => new Date(b.Date) - new Date(a.Date));
+        setData(sortedData);
+      } catch (error) {
+        console.error('Error fetching historical data:', error);
+      }
+    };
+
+    fetchHistoricalData();
+  }, [symbol]);
+
+  const handleRangeChange = (event) => {
+    setSelectedRange(event.target.value);
+  };
+
+  const filteredData = filterDataByRange(data, selectedRange);
+
   return (
     <div style={{ display: 'flex' }}>
       <Sidebar symbol={stock.symbol} />
       <div style={{ marginLeft: '240px', marginTop: '64px', padding: '20px', width: 'calc(100% - 240px)' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
+          <DateRangePicker selectedRange={selectedRange} onRangeChange={handleRangeChange} />
+        </div>
+        <HistoricalDataChart data={filteredData} />
         <Typography variant="h4" component="div" gutterBottom>
           {stock.name}
         </Typography>
