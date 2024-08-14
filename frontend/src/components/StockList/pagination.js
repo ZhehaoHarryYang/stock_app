@@ -13,8 +13,8 @@ const Pagination = ({ page, total, limit, onPageChange }) => {
   const renderPageNumbers = () => {
     const pageNumbers = [];
 
-    const startPage = Math.max(1, page - 1);
-    const endPage = Math.min(totalPages, page + 1);
+    const startPage = Math.max(1, page - 2);
+    const endPage = Math.min(totalPages, page + 2);
 
     if (startPage > 1) {
       pageNumbers.push(

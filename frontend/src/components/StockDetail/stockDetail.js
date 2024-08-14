@@ -1,18 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Grid, Card, CardContent, Divider } from '@mui/material';
-import Sidebar from './sideBar'; // Updated import path to match convention
-import { filterDataByRange } from '../../utils/dataByRange'; // Updated import path
-import DateRangePicker from '../HistoricalData/dateRangePicker'; // Updated import path
-import { getHistoricalData } from '../../api/stocks';
-import HistoricalDataChart from '../HistoricalData/historicalDataChart'; // Updated import path
+import { Typography, Grid, Card, CardContent, Divider, Button } from '@mui/material';
+import Sidebar from './sideBar';
+import StockDetailCard from './stockDetailCard';
+import { filterDataByRange } from '../../utils/dataByRange';
+import DateRangePicker from '../HistoricalData/dateRangePicker';
+import { getHistoricalData, getStockDetail } from '../../api/stocks';
+import HistoricalDataChart from '../HistoricalData/historicalDataChart';
+import Loading from '../../utils/loading';
 
-const StockDetail = ({ stock }) => {
+const StockDetail = () => {
   const { symbol } = useParams();
   const [data, setData] = useState([]);
-  const [selectedRange, setSelectedRange] = useState('all'); // Default to 'all'
+  const [stock, setStock] = useState(null);
+  const [newes, setNewes] = useState(null);
+  const [selectedRange, setSelectedRange] = useState('all');
+  const [loading, setLoading] = useState(true);
+  const [isOverviewExpanded, setIsOverviewExpanded] = useState(false);
+  const newsRef = useRef(null); // Create a ref for the news section
 
   useEffect(() => {
+    const fetchStockDetails = async () => {
+      setLoading(true);
+      try {
+        const data = await getStockDetail(symbol);
+        setStock(data.stock);
+        setNewes(data.news);
+      } catch (error) {
+        console.error('Error fetching stock details:', error);
+      }
+    };
+
     const fetchHistoricalData = async () => {
       try {
         const result = await getHistoricalData(symbol);
@@ -23,87 +41,99 @@ const StockDetail = ({ stock }) => {
       }
     };
 
-    fetchHistoricalData();
+    const fetchData = async () => {
+      await Promise.all([fetchStockDetails(), fetchHistoricalData()]);
+      setLoading(false);
+    };
+
+    fetchData();
   }, [symbol]);
 
   const handleRangeChange = (event) => {
     setSelectedRange(event.target.value);
   };
 
+  const handleToggleOverview = () => {
+      setIsOverviewExpanded(!isOverviewExpanded);
+    };
+  
+  // Truncate function
+  const truncateText = (text) => {
+    const maxLength = 100; // Set maximum length for truncated text
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+    return text;
+  };
+
   const filteredData = filterDataByRange(data, selectedRange);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (!stock) {
+    return <div>No stock data available.</div>;
+  }
 
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar symbol={stock.symbol} />
-      <div style={{ marginLeft: '240px', marginTop: '64px', padding: '20px', width: 'calc(100% - 240px)' }}>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
-          <DateRangePicker selectedRange={selectedRange} onRangeChange={handleRangeChange} />
+      <Sidebar symbol={stock.symbol} scrollToNews={() => newsRef.current.scrollIntoView({ behavior: 'smooth' })} />
+      <div style={{ marginLeft: '250px', marginTop: '64px', padding: '20px', width: 'calc(100% - 250px)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+          <Typography variant="h4" component="div" gutterBottom>
+            {stock.name}
+          </Typography>
         </div>
+        <Divider sx={{ margin: '20px 0 20px', borderBottom: '2px solid black'}}/>
+        <DateRangePicker selectedRange={selectedRange} onRangeChange={handleRangeChange} />
         <HistoricalDataChart data={filteredData} />
-        <Typography variant="h4" component="div" gutterBottom>
-          {stock.name}
-        </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6" component="div">Stock Information</Typography>
-                <Divider />
-                <Typography variant="body1" color="text.secondary">1y Target Est: {stock['1y Target Est']}</Typography>
-                <Typography variant="body1" color="text.secondary">52 Week Range: {stock['52 Week Range']}</Typography>
-                <Typography variant="body1" color="text.secondary">Ask: {stock.Ask}</Typography>
-                <Typography variant="body1" color="text.secondary">Avg. Volume: {stock['Avg. Volume']}</Typography>
-                <Typography variant="body1" color="text.secondary">Beta (5Y Monthly): {stock['Beta (5Y Monthly)']}</Typography>
-                <Typography variant="body1" color="text.secondary">Bid: {stock.Bid}</Typography>
-                <Typography variant="body1" color="text.secondary">Day's Range: {stock["Day's Range"]}</Typography>
-                <Typography variant="body1" color="text.secondary">EPS (TTM): {stock['EPS (TTM)']}</Typography>
-                <Typography variant="body1" color="text.secondary">Earnings Date: {stock['Earnings Date']}</Typography>
-                <Typography variant="body1" color="text.secondary">Ex-Dividend Date: {stock['Ex-Dividend Date']}</Typography>
-                <Typography variant="body1" color="text.secondary">Forward Dividend & Yield: {stock['Forward Dividend & Yield']}</Typography>
-                <Typography variant="body1" color="text.secondary">Market Cap (intraday): {stock['Market Cap (intraday)']}</Typography>
-                <Typography variant="body1" color="text.secondary">Open: {stock.Open}</Typography>
-                <Typography variant="body1" color="text.secondary">PE Ratio (TTM): {stock['PE Ratio (TTM)']}</Typography>
-                <Typography variant="body1" color="text.secondary">Previous Close: {stock['Previous Close']}</Typography>
-                <Typography variant="body1" color="text.secondary">Volume: {stock.Volume}</Typography>
-              </CardContent>
-            </Card>
+          <Grid item xs={12}>
+            <StockDetailCard stock={stock} />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Card>
+          <Grid item xs={12}>
+            <Card style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
               <CardContent>
-                <Typography variant="h6" component="div">Company Overview</Typography>
-                <Divider />
-                <Typography variant="body2" color="text.secondary">{stock.Overview}</Typography>
+                <Typography variant="h5" component="div">Company Overview</Typography>
+                <Divider sx={{ margin: '20px 0 20px' }} />
+                <Typography variant="body2" color="text.secondary">
+                  {isOverviewExpanded ? stock.Overview : truncateText(stock.Overview)}
+                </Typography>
+                <Button onClick={handleToggleOverview} sx={{ mt: 1 }}>
+                  {isOverviewExpanded ? 'Read Less' : 'Read More'}
+                </Button>
               </CardContent>
             </Card>
           </Grid>
         </Grid>
-        <Typography variant="h6" component="div" gutterBottom style={{ marginTop: '20px' }}>
+        <Divider sx={{ margin: '40px 0 40px', borderBottom: '2px solid black'}}  ref={newsRef}/>
+        <Typography variant="h4" component="div" gutterBottom style={{ marginTop: '40px' }}>
           Latest News
         </Typography>
-        <Grid container spacing={2}>
-          {stock.newsList.map((news, index) => (
-            <Grid item xs={12} sm={6} key={index}>
-              <Card>
-                <CardContent style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ flex: 1, marginRight: '10px' }}>
+        {newes.newsList && (
+          <Grid container spacing={2}>
+            {newes.newsList.map((news, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Card style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
                     <Typography variant="body2" color="text.secondary">{news.source}</Typography>
                     <Typography variant="body1" component="div">
                       <a href={news.link} target="_blank" rel="noopener noreferrer">{news.title}</a>
                     </Typography>
-                  </div>
-                  {news.image && (
-                    <img 
-                      src={news.image} 
-                      alt={news.title} 
-                      style={{ width: '100px', height: 'auto' }} 
-                    />
-                  )}
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                    {news.image && (
+                      <img 
+                        src={news.image} 
+                        alt={news.title} 
+                        style={{ width: '100%', height: 'auto', marginTop: '10px' }} 
+                      />
+                    )}
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </div>
     </div>
   );

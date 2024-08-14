@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from services.stock_service import get_stocks_data, get_top_gainers, get_top_losers, get_stock_detail_data, get_stock_historical_data
+from services.stock_service import get_stocks_data, get_top_gainers, get_top_losers, get_stock_detail_data, get_stock_historical_data, search_stocks
 
 stocks_bp = Blueprint('stocks', __name__)
 
@@ -22,10 +22,22 @@ def get_top_losers_route():
 
 @stocks_bp.route('/stocks/<symbol>', methods=['GET'])
 def get_stock_detail(symbol):
-    stock_detail = get_stock_detail_data(symbol)
-    return jsonify(stock_detail)
+    stock, news = get_stock_detail_data(symbol)
+    return jsonify({'stock': stock, 'news': news})
 
 @stocks_bp.route('/stocks/<symbol>/historical', methods=['GET'])
 def get_stock_historical(symbol):
     stock_detail = get_stock_historical_data(symbol)
     return jsonify(stock_detail)
+
+@stocks_bp.route('/stocks/search', methods=['GET'])
+def search():
+    # Get the search query from the request arguments
+    query = request.args.get('query', '')
+    
+    # Search for stocks
+    stocks = search_stocks(query)
+    
+    # Return the results as JSON
+    return jsonify(stocks)
+

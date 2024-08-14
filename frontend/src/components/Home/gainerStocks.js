@@ -2,18 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { getTopGainers } from '../../api/stocks';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import Loading from '../../utils/loading'; // Import the Loading component
 
 const GainerStocks = () => {
   const [gainers, setGainers] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchGainers = async () => {
-      const data = await getTopGainers();
-      setGainers(data);
+      setLoading(true); // Set loading to true before fetching
+      try {
+        const data = await getTopGainers();
+        setGainers(data);
+      } catch (error) {
+        console.error('Error fetching top gainers:', error);
+      } finally {
+        setLoading(false); // Ensure loading is set to false after fetching
+      }
     };
 
     fetchGainers();
   }, []);
+
+  // Handle loading and error states in the component render
+  if (loading) {
+    return <Loading />; // Show loading component while loading
+  }
 
   return (
     <div>

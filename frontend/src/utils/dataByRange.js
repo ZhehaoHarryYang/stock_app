@@ -1,34 +1,42 @@
 export const filterDataByRange = (data, range) => {
-  if (!data || data.length === 0) return [];
-
-  const latestDate = new Date(data[0].Date);
-  let startDate;
-
-  switch (range) {
+    if (!data || data.length === 0) return [];
+  
+    // Get the latest date from the data
+    const latestDate = new Date(data[0].Date);
+    let startDate;
+  
+    // Create a new Date object to avoid mutating latestDate
+    switch (range) {
       case '5d':
-          startDate = new Date();
-          startDate.setDate(latestDate.getDate() - 5);
-          break;
+        startDate = new Date(latestDate);
+        startDate.setDate(latestDate.getDate() - 7);
+        break;
       case '1m':
-          startDate = new Date();
-          startDate.setDate(latestDate.getDate() - 30); // 30 days for 1 month
-          break;
+        startDate = new Date(latestDate);
+        startDate.setMonth(latestDate.getMonth() - 1);
+        break;
       case '3m':
-          startDate = new Date();
-          startDate.setDate(latestDate.getDate() - 90); // 90 days for 3 months
-          break;
+        startDate = new Date(latestDate);
+        startDate.setMonth(latestDate.getMonth() - 3);
+        break;
       case '6m':
-          startDate = new Date();
-          startDate.setDate(latestDate.getDate() - 180); // 180 days for 6 months
-          break;
+        startDate = new Date(latestDate);
+        startDate.setMonth(latestDate.getMonth() - 6);
+        break;
       case '1y':
-          startDate = new Date();
-          startDate.setDate(latestDate.getDate() - 365); // 365 days for 1 year
-          break;
+        startDate = new Date(latestDate);
+        startDate.setFullYear(latestDate.getFullYear() - 1);
+        break;
       case 'all':
       default:
-          return data;
-  }
+        return data;
+    }
 
-  return data.filter(item => new Date(item.Date) >= startDate);
-};
+    // Filter the data based on the calculated startDate
+    return data.filter(item => {
+      const itemDate = new Date(item.Date);
+      // Check if the item date is within the range
+      return itemDate > startDate && itemDate <= latestDate;
+    });
+  };
+  

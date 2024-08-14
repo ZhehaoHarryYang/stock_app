@@ -17,3 +17,5 @@ def get_chrome_driver():
     # Initialize the Chrome driver
     driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
     return driver
+
+get_chrome_driver()

@@ -13,8 +13,7 @@ driver = get_chrome_driver()
 
 # Open the webpage
 # connect to database
-db = get_database()
-collection_detail = get_collection(db, 'stock_details')
+collection_detail = get_collection('stock_details')
 
 def get_stock_info(symbol):
     # send to which url

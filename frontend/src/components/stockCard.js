@@ -1,23 +1,65 @@
-import React from 'react';
-import { Card, CardContent, Typography, Divider } from '@mui/material';
+import React, { useState, useEffect, useContext } from 'react';
+import { Card, CardContent, Typography, Divider, IconButton, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { FavoriteContext } from '../context/favoriteStockContext'; // Adjust import path as needed
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 const StockCard = ({ stock }) => {
+  const { favoriteStocks, addFavorite, removeFavorite } = useContext(FavoriteContext);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    const isFav = favoriteStocks.some(favStock => favStock.symbol === stock.symbol);
+    setIsFavorite(isFav);
+  }, [favoriteStocks, stock.symbol]);
+
+  const handleFavoriteClick = () => {
+    if (isFavorite) {
+      removeFavorite(stock.symbol);
+    } else {
+      addFavorite(stock.symbol);
+    }
+  };
+
   const getChangeColor = (change) => {
     if (!change) return 'inherit'; // Default color if no change
     return change.startsWith('+') ? 'green' : 'red';
   };
+
   return (
     <Card style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardContent>
-        <Typography variant="h6" component="div">
-          <Link to={`/stocks/${stock.symbol}`}>
-            {stock.name} ({stock.symbol})
-          </Link>
-        </Typography>
-        <Divider />
+        <Grid container alignItems="center">
+          <Grid item xs={10}>
+            <Typography 
+              variant="h6" 
+              style={{
+                textDecoration: 'none',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                display: 'block',
+              }} 
+              component={Link} 
+              to={`/stocks/${stock.symbol}`}
+            >
+              {stock.symbol} ({stock.name})
+            </Typography>
+          </Grid>
+          <Grid item xs={2}>
+            <IconButton 
+              color={isFavorite ? 'primary' : 'default'} 
+              onClick={handleFavoriteClick}
+              style={{ width: '100%', height: '100%' }}
+            >
+              {isFavorite ? <RemoveCircleIcon /> : <AddCircleIcon />}
+            </IconButton>
+          </Grid>
+        </Grid>
+        <Divider sx={{ margin:'10px 0 10px' }}/>
         <Typography variant="body2">
-          Price: ${stock.price} 
+          Price: ${stock.price}
         </Typography>
         {stock.change && (
           <Typography 

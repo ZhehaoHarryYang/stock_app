@@ -28,3 +28,10 @@ export const getHistoricalData = async (symbol) => {
   const response = await axios.get(`${BASE_URL}/stocks/${symbol}/historical`);
   return response.data;
 };
+
+export const searchStocks = async(searchQuery = '') => {
+  const response = await axios.get(`${BASE_URL}/stocks/search`, {
+    params: { query: searchQuery }
+  });
+  return response.data;
+}

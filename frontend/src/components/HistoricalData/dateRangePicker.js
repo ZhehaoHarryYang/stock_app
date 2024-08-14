@@ -4,7 +4,11 @@ import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 const DateRangePicker = ({ selectedRange, onRangeChange }) => {
   return (
-    <FormControl variant="outlined" style={{ minWidth: 120 }}>
+    <FormControl variant="outlined" sx={{
+      minWidth: 120,
+      marginLeft: 'auto', // Pushes the component to the right
+      display: 'flex',
+    }}>
       <InputLabel style={{ fontSize: '0.875rem' }}>Range</InputLabel>
       <Select
         value={selectedRange}
