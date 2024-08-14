@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/stock_app/static/js/main.ce435d98.js",
+    "index.html": "/stock_app/index.html",
+    "main.ce435d98.js.map": "/stock_app/static/js/main.ce435d98.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.ce435d98.js"
+  ]
+}
