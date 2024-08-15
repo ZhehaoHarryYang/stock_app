@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'stock-app-env.eba-nzdp58fi.us-east-1.elasticbeanstalk.com' || 'http://127.0.0.1:5000/api';
+const BASE_URL = 'stock-app-env.eba-nzdp58fi.us-east-1.elasticbeanstalk.com/api' || 'http://192.168.3.42:8000/api';
 
 export const getStocks = async (page, limit) => {
   const response = await axios.get(`${BASE_URL}/stocks`, {
