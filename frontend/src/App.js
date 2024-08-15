@@ -16,7 +16,7 @@ import StockComparePage from './pages/compareStockPage';
 const App = () => {
 
   return (
-    <Router>
+    <Router basename="/stock_app">
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />

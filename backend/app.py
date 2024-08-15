@@ -5,7 +5,7 @@ from controllers.users_controller import user_controller
 from controllers.user_stocks_controller import favorites_bp
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "https://zhehaoharryyang.github.io/stock_app"]}})
+CORS(app, resources={r"/api/*": {"origins": ["https://zhehaoharryyang.github.io/stock_app"]}})
 
 app.register_blueprint(stocks_bp, url_prefix='/api')
 app.register_blueprint(user_controller, url_prefix='/api')

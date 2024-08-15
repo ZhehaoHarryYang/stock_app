@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'stock-app-env.eba-nzdp58fi.us-east-1.elasticbeanstalk.com' || 'http://192.168.3.42:8000/api';
+const BASE_URL = 'stock-app-env.eba-nzdp58fi.us-east-1.elasticbeanstalk.com/api' || 'http://192.168.3.42:8000/api';
 
 // Fetch favorite stocks
 export const fetchFavoriteStocks = async (userName) => {
