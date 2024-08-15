@@ -2,11 +2,13 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Card, CardContent, Typography, Divider, IconButton, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { FavoriteContext } from '../context/favoriteStockContext'; // Adjust import path as needed
+import { useAuth } from '../context/authContext'; // Adjust import path as needed
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 const StockCard = ({ stock }) => {
   const { favoriteStocks, addFavorite, removeFavorite } = useContext(FavoriteContext);
+  const { isAuthenticated } = useAuth(); // Assuming AuthContext provides authentication status
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
@@ -48,13 +50,15 @@ const StockCard = ({ stock }) => {
             </Typography>
           </Grid>
           <Grid item xs={2}>
-            <IconButton 
-              color={isFavorite ? 'primary' : 'default'} 
-              onClick={handleFavoriteClick}
-              style={{ width: '100%', height: '100%' }}
-            >
-              {isFavorite ? <RemoveCircleIcon /> : <AddCircleIcon />}
-            </IconButton>
+            {isAuthenticated && (
+              <IconButton 
+                color={isFavorite ? 'primary' : 'default'} 
+                onClick={handleFavoriteClick}
+                style={{ width: '100%', height: '100%' }}
+              >
+                {isFavorite ? <RemoveCircleIcon /> : <AddCircleIcon />}
+              </IconButton>
+            )}
           </Grid>
         </Grid>
         <Divider sx={{ margin:'10px 0 10px' }}/>

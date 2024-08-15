@@ -1,5 +1,3 @@
-from init_path import *
-
 from models.mongo_connection import get_collection
 from fuzzywuzzy import fuzz
 

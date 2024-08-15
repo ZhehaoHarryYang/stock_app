@@ -24,7 +24,7 @@ const LoginPage = () => {
       login(token); // Set token in AuthContext
       navigate('/favorites'); // Redirect to home or protected page
     } catch (error) {
-      alert(`Error creating account: ${error.message}`);
+      alert(`Error login account: ${error.message}`);
     }
   };
 
