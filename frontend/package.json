@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@mui/icons-material": "^5.16.4",
@@ -29,7 +30,6 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build --repo https://github.com/ZhehaoHarryYang/stock_app.git"
-
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +52,6 @@
   "devDependencies": {
     "gh-pages": "^6.1.1"
   },
-  "homepage": "https://ZhehaoHarryYang.github.io/stock_app"
-
+  "homepage": "https://ZhehaoHarryYang.github.io/stock_app",
+  "proxy": "http://localhost:8000"
 }

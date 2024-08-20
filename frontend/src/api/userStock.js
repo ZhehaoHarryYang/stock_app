@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const BASE_URL = 'stock-app-env.eba-nzdp58fi.us-east-1.elasticbeanstalk.com/api' || 'http://192.168.3.42:8000/api';
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;;
 
 // Fetch favorite stocks
 export const fetchFavoriteStocks = async (userName) => {
   try {
     const response = await axios.get(`${BASE_URL}/favorites/${userName}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true',
       }
     });
     return response.data;
@@ -21,7 +21,7 @@ export const addFavoriteStock = async (userName, stock) => {
   try {
     await axios.post(`${BASE_URL}/favorites/${userName}`, { stock }, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true',
       }
     });
   } catch (error) {
@@ -34,7 +34,7 @@ export const removeFavoriteStock = async (userName, stock) => {
   try {
     await axios.delete(`${BASE_URL}/favorites/${userName}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true',
       },
       data: { stock }
     });
@@ -51,7 +51,7 @@ export const addCompareStock = async (userName, stock) => {
       { stock },
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true',
         },
       }
     );
@@ -70,7 +70,7 @@ export const fetchCompareStocks = async (userName) => {
   try {
     const response = await axios.get(`${BASE_URL}/compare/${userName}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true',
       }
     });
     return response.data;
@@ -86,6 +86,7 @@ export const getStockList = async () => {
     const response = await axios.get(`${BASE_URL}/stockList`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true',
         
       },
     });

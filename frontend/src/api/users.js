@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'stock-app-env.eba-nzdp58fi.us-east-1.elasticbeanstalk.com/api' || 'http://192.168.3.42:8000/api';
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;;
 
 export const createAccount = async (userName, email, password) => {
   try {
@@ -8,6 +8,8 @@ export const createAccount = async (userName, email, password) => {
       userName,
       email,
       password
+    }, 
+    {headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true', },
     });
     
     // Return the response data if the request is successful
@@ -30,7 +32,8 @@ export const createAccount = async (userName, email, password) => {
 
 export const loginUser = async (userName, password) => {
   try {
-      const response = await axios.post(`${BASE_URL}/login`, { userName, password });
+      const response = await axios.post(`${BASE_URL}/login`, { userName, password }, {headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true', },
+      });
       const { token } = response.data;
       localStorage.setItem('token', token);
       return token;
@@ -47,7 +50,7 @@ export const fetchUserAccount = async (userName) => {
   try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${BASE_URL}/user-account/${userName}`, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}`,'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true', }
       });
       return response.data;
   } catch (error) {
@@ -62,7 +65,7 @@ export const updatePassword = async (userName, currentPassword, newPassword) => 
       currentPassword,
       newPassword
     }, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true', }
     });
     return response.data;
   } catch (error) {
@@ -76,7 +79,7 @@ export const updateUserInfo = async (userName, email) => {
     const response = await axios.put(`${BASE_URL}/user-account/${userName}/email`, {
       email
     }, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true', }
     });
     return response.data;
 
@@ -91,7 +94,7 @@ export const deleteUser = async (userName, password) => {
     const response = await axios({
       method: 'DELETE',
       url: `${BASE_URL}/delete-account/${userName}`,
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true', },
       data: { password } // Send password in the request body
     });
     console.log(response.data);

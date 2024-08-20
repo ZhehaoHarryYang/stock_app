@@ -60,6 +60,61 @@ def get_top_losers():
         
     return losers
 
+def get_most_active():
+    collection_active = get_collection('most_active')
+    
+    actives = list(collection_active.find())
+    
+    # Convert ObjectId to string
+    for active in actives:
+        active['_id'] = str(active['_id'])
+        
+    return actives
+
+def get_trending_now():
+    collection_trending = get_collection('trending_now')
+    
+    trendings = list(collection_trending.find())
+    
+    # Convert ObjectId to string
+    for trending in trendings:
+        trending['_id'] = str(trending['_id'])
+        
+    return trendings
+
+def get_trending_now():
+    collection_trending = get_collection('trending_now')
+    
+    trendings = list(collection_trending.find())
+    
+    # Convert ObjectId to string
+    for trending in trendings:
+        trending['_id'] = str(trending['_id'])
+        
+    return trendings
+
+def get_year_gainers():
+    collection = get_collection('year_top_gainers')
+    
+    year_gainers = list(collection.find())
+    
+    # Convert ObjectId to string
+    for year_gainer in year_gainers:
+        year_gainer['_id'] = str(year_gainer['_id'])
+        
+    return year_gainers
+
+def get_year_losers():
+    collection = get_collection('year_top_losers')
+    
+    year_losers = list(collection.find())
+    
+    # Convert ObjectId to string
+    for year_loser in year_losers:
+        year_loser['_id'] = str(year_loser['_id'])
+        
+    return year_losers
+
 def get_stock_detail_data(symbol):
     collection_Stocks = get_collection('stock_details')
     collection_news = get_collection('stock_news')

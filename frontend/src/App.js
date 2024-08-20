@@ -11,6 +11,12 @@ import PrivateRoute from './components/privateRoute'; // Adjust the import path 
 import FavStocksPage from './pages/favStocksPage';
 import UserProfilePage from './pages/userProfilePage';
 import StockComparePage from './pages/compareStockPage';
+import GainerStocks from './components/Home/gainerStocks';
+import LoserStocks from './components/Home/loserStocks';
+import MostActive from './components/Home/mostActive';
+import TrendingNow from './components/Home/trendingNow';
+import YearGainers from './components/Home/yearGainer';
+import YearLosers from './components/Home/yearLoser';
 
 
 const App = () => {
@@ -19,7 +25,27 @@ const App = () => {
     <Router basename="/stock_app">
       <Header />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/"
+          element={
+            <HomePage>
+              <MostActive />
+            </HomePage>
+          }
+        />        
+        <Route 
+          path="/most-active" 
+          element={
+            <HomePage>
+              <MostActive />
+            </HomePage>
+          } 
+        />
+        <Route path="/trending-now" element={<HomePage><TrendingNow /></HomePage>} />
+        <Route path="/top-gainers" element={<HomePage><GainerStocks /></HomePage>} />
+        <Route path="/top-losers" element={<HomePage><LoserStocks /></HomePage>} />
+        <Route path="/52-week-losers" element={<HomePage><YearLosers /></HomePage>} />
+        <Route path="/52-week-gainers" element={<HomePage><YearGainers /></HomePage>} />
         <Route path="/stocks" element={<StockListPage />} />
         <Route path="/stocks/:symbol" element={<StockDetailPage />} />
         <Route path="/stocks/:symbol/historical" element={<HistoricalDataPage />} />

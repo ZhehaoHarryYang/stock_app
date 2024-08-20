@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from services.stock_service import get_stocks_data, get_top_gainers, get_top_losers, get_stock_detail_data, get_stock_historical_data, search_stocks
+from services.stock_service import get_stocks_data, get_top_gainers, get_top_losers, get_stock_detail_data, get_stock_historical_data, search_stocks, get_most_active, get_trending_now, get_year_gainers, get_year_losers
 
 stocks_bp = Blueprint('stocks', __name__)
 
@@ -19,6 +19,26 @@ def get_top_gainers_route():
 def get_top_losers_route():
     top_losers = get_top_losers()
     return jsonify(top_losers)
+
+@stocks_bp.route('/stocks/most-active', methods=['GET'])
+def get_most_active_route():
+    most_active = get_most_active()
+    return jsonify(most_active)
+
+@stocks_bp.route('/stocks/trending-now', methods=['GET'])
+def get_trending_now_route():
+    trendings = get_trending_now()
+    return jsonify(trendings)
+
+@stocks_bp.route('/stocks/year-gainers', methods=['GET'])
+def get_year_gainers_route():
+    year_gainers = get_year_gainers()
+    return jsonify(year_gainers)
+
+@stocks_bp.route('/stocks/year-losers', methods=['GET'])
+def get_year_losers_route():
+    year_losers= get_year_losers()
+    return jsonify(year_losers)
 
 @stocks_bp.route('/stocks/<symbol>', methods=['GET'])
 def get_stock_detail(symbol):

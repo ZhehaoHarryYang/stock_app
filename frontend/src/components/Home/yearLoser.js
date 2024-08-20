@@ -1,10 +1,10 @@
 import React from 'react';
-import { getTopLosers } from '../../api/stocks'; // Define this function in your API file
+import { getYearLosers } from '../../api/stocks'; // Define this function in your API file
 import StockTable from './stockTable';
 
-const TopLosers = () => {
+const YearLosers = () => {
   const columns = {
-    title: 'Top Loser Stocks',
+    title: '52 Week Losers',
     headers: ['Symbol', 'Name', 'Price', 'Change', 'Change %', 'Volume', 'Avg Vol (3M)', 'Market Cap', 'P/E Ratio (TTM)', '52 Wk Change %'],
     fields: ['symbol', 'name', 'price', 'change', 'changePer', 'volume', 'avgVol', 'marketCap', 'PER', 'YearChangePer']
   };
@@ -14,7 +14,7 @@ const TopLosers = () => {
     return change.startsWith('-') ? 'red' : 'green';
   };
 
-  return <StockTable fetchStocks={getTopLosers} columns={columns} getChangeColor={getChangeColor} />;
+  return <StockTable fetchStocks={getYearLosers} columns={columns} getChangeColor={getChangeColor} />;
 };
 
-export default TopLosers;
+export default YearLosers;

@@ -6,20 +6,22 @@ export const FavoriteContext = createContext();
 
 export const FavoriteProvider = ({ children }) => {
   const [favoriteStocks, setFavoriteStocks] = useState([]);
-  const { userName } = useAuth(); // Retrieve the logged-in user's information
+  const { isAuthenticated, userName } = useAuth(); // Retrieve the logged-in user's information
 
   useEffect(() => {
     const loadFavorites = async () => {
-      try {
-        const favorites = await fetchFavoriteStocks(userName);
-        setFavoriteStocks(favorites);
-      } catch (error) {
-        console.error('Failed to fetch favorite stocks:', error);
+      if (isAuthenticated && userName) {  // Check if the user is authenticated
+        try {
+          const favorites = await fetchFavoriteStocks(userName);
+          setFavoriteStocks(favorites);
+        } catch (error) {
+          console.error('Failed to fetch favorite stocks:', error);
+        }
       }
     };
 
     loadFavorites();
-  }, [userName]);
+  }, [isAuthenticated, userName]); // Depend on both isAuthenticated and userName
 
   const loadFavorites = async () => {
     try {
@@ -29,22 +31,26 @@ export const FavoriteProvider = ({ children }) => {
       console.error('Failed to fetch favorite stocks:', error);
     }
   };
-
+  
   const addFavorite = async (symbol) => {
-    try {
-      await addFavoriteStock(userName, symbol);
-      loadFavorites(); // Re-fetch the list after adding a stock
-    } catch (error) {
-      console.error('Failed to add favorite stock:', error);
+    if (isAuthenticated && userName) {  // Check if the user is authenticated
+      try {
+        await addFavoriteStock(userName, symbol);
+        loadFavorites(); // Re-fetch the list after adding a stock
+      } catch (error) {
+        console.error('Failed to add favorite stock:', error);
+      }
     }
   };
 
   const removeFavorite = async (symbol) => {
-    try {
-      await removeFavoriteStock(userName, symbol);
-      loadFavorites(); // Re-fetch the list after removing a stock
-    } catch (error) {
-      console.error('Failed to remove favorite stock:', error);
+    if (isAuthenticated && userName) {  // Check if the user is authenticated
+      try {
+        await removeFavoriteStock(userName, symbol);
+        loadFavorites(); // Re-fetch the list after removing a stock
+      } catch (error) {
+        console.error('Failed to remove favorite stock:', error);
+      }
     }
   };
 
