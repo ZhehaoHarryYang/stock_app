@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { getBaseUrl } from './BaseUrl';
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;;
+const BASE_URL = await getBaseUrl();
 
 export const createAccount = async (userName, email, password) => {
   try {

@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { getBaseUrl } from './BaseUrl';
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const BASE_URL = await getBaseUrl();
 
 export const getStocks = async (page, limit) => {
   const response = await axios.get(`${BASE_URL}/stocks`, {
@@ -78,3 +79,9 @@ export const searchStocks = async(searchQuery = '') => {
 
   return response.data;
 }
+
+export const getRecommendStock = async (symbol) => {
+  const response = await axios.get(`${BASE_URL}/stocks/${symbol}/recommend`, { headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true', },
+  });
+  return response.data;
+};

@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.REACT_APP_API_BASE_URL;;
+import { getBaseUrl } from './BaseUrl';
+
+const BASE_URL = await getBaseUrl();
 
 // Fetch favorite stocks
 export const fetchFavoriteStocks = async (userName) => {

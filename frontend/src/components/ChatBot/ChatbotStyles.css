@@ -1,0 +1,18 @@
+/* ChatbotStyles.css */
+.react-chatbot-kit-chat-container {
+    position: relative;
+    width: 100% !important; /* Ensure the chat container takes full width */
+    height: 100% !important; /* Ensure the chat container takes full height */
+}
+.react-chatbot-kit-chat-inner-container {
+    position: relative;
+    width: 100% !important; /* Ensure the chat container takes full width */
+    height: 100% !important; /* Ensure the chat container takes full height */
+}
+.react-chatbot-kit-chat-message-container {
+    height: 100% !important; /* Ensure the chat container takes full height */
+}
+.react-chatbot-kit-chat-bot-message {
+    width: 60% !important; /* Allow bot messages to size automatically */
+    margin-left: 20px;
+}

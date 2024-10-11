@@ -32,7 +32,7 @@ const StockDetailCard = ({ stock }) => {
         ].map(([label, value], index) => (
           <Box key={index} display="flex" justifyContent="space-between" mb={1}>
             <Typography variant="body1">{label}:</Typography>
-            <Typography variant="body1" sx={{ textAlign: 'right' }}>{value}</Typography>
+            <Typography variant="body1" sx={{ textAlign: 'right', fontWeight: 'bold' }}>{value}</Typography>
           </Box>
         ))}
       </CardContent>

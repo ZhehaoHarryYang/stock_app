@@ -141,3 +141,31 @@ def get_stock_historical_data(symbol):
         stock['_id'] = str(stock['_id'])
     return stock
 
+def get_stock_recommend_data(symbol):
+    collection_Stocks = get_collection('stock_details')
+    stock = collection_Stocks.find_one({'symbol': symbol})
+    industry = stock['Industry']
+    sector = stock['Sector']
+    collection_List = get_collection('StockList')
+    # Find stocks with the same industry OR sector
+    similar_stocks = collection_Stocks.find({
+        '$or': [
+            {'Industry': industry},
+            {'Sector': sector}
+        ],
+        'symbol': {'$ne': symbol}
+    })
+    
+    # Connect to the 'StockList' collection
+    collection_List = get_collection('StockList')
+    
+    # Collect the corresponding data from the 'StockList' collection
+    recommended_data = []
+    for similar_stock in similar_stocks:
+        # Retrieve the corresponding data from 'StockList' by the symbol
+        stock_data = collection_List.find_one({'symbol': similar_stock['symbol']})
+        if stock_data:
+            stock_data['_id'] = str(stock_data['_id'])
+            recommended_data.append(stock_data)
+    
+    return recommended_data
