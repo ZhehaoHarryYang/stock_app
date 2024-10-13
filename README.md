@@ -1,4 +1,4 @@
 ## Demo
 
-![App Demo](media/Basic Use.mov)
-![Chat bot use Demo](media/A quick chat bot use.mov)
+![App Demo](https://youtu.be/buMBHd0zj5c)
+![Chat bot use Demo](https://youtu.be/sSLb8TJk3iI)
