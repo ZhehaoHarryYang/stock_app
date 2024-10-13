@@ -1,4 +1,7 @@
 ## Demo
 
-![App Demo](https://youtu.be/buMBHd0zj5c)
-![Chat bot use Demo](https://youtu.be/sSLb8TJk3iI)
+[![Watch App demo](https://img.youtube.com/vi/buMBHd0zj5c/mqdefault.jpg)](https://www.youtube.com/watch?v=buMBHd0zj5c)
+
+[![Watch ChatBot Use demo](https://img.youtube.com/vi/sSLb8TJk3iI/mqdefault.jpg)](https://www.youtube.com/watch?v=sSLb8TJk3iI)
+
+
